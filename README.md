@@ -3,6 +3,8 @@
 -configure tailwind css
      -npm install -D tailwindcss@3
      -npx tailwindcss init 
+-Header
+-login form
 
 # features 
 -login/sign Up 
