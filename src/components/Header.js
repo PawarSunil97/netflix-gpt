@@ -1,14 +1,39 @@
 import React, { useState, useRef, useEffect } from "react";
-import { NETFLIX_LOGO } from "../utils/constant";
-import { signOut } from "firebase/auth";
+import { NETFLIX_LOGO,USER_AVTAR } from "../utils/constant";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../utils/firebase";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUsers, removeUser } from "../store/userSlice";
 
 const Header = () => {
   const [showProfile, setShowProfile] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
   const user = auth.currentUser;
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+   const unSubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const { uid, email, displayName, photoURL } = user;
+        dispatch(
+          addUsers({
+            uid: uid,
+            email: email,
+            displayName: displayName,
+            photoURL: photoURL,
+          })
+        );
+        navigate("/browse");
+      } else {
+        dispatch(removeUser());
+        navigate("/");
+      }
+    });
+    // unsuscribe when component is unmoute
+    return ()=>unSubscribe();
+  }, []);
 
   const handleProfileDropDown = () => {
     setShowProfile((prev) => !prev);
@@ -26,12 +51,8 @@ const Header = () => {
 
   const handleSignOut = () => {
     signOut(auth)
-      .then(() => {
-        navigate("/");
-      })
-      .catch((error) => {
-        console.error("Sign out error:", error);
-      });
+      .then(() => {})
+      .catch((error) => {});
   };
 
   return (
@@ -44,7 +65,9 @@ const Header = () => {
       {/* User Profile Section */}
       {user && (
         <div className="flex items-center space-x-4">
-          <h1 className="text-white font-semibold">{user?.displayName ?? "User"}</h1>
+          <h1 className="text-white font-semibold">
+            {user?.displayName ?? "User"}
+          </h1>
 
           <div className="relative" ref={dropdownRef}>
             <button
@@ -58,7 +81,7 @@ const Header = () => {
               <span className="sr-only">Open user menu</span>
               <img
                 className="w-12 h-12 rounded-full"
-                src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png"
+                src={USER_AVTAR}
                 alt="User Avatar"
               />
             </button>

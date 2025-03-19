@@ -1,66 +1,73 @@
 import React, { useRef, useState } from "react";
 import Header from "./Header";
-import {createUserWithEmailAndPassword,signInWithEmailAndPassword, updateProfile } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
 import { checkValidData } from "../utils/Validate";
-import { BANER_IMAGE } from "../utils/constant";
+import { BANER_IMAGE, USER_AVTAR } from "../utils/constant";
 import { auth } from "../utils/firebase";
-import { useNavigate } from "react-router-dom";
+
 import { useDispatch } from "react-redux";
-import { addUsers } from "./store/userSlice";
+import { addUsers } from "../store/userSlice";
 const Login = () => {
   const [isSignInForm, setIsSignInform] = useState(true);
   const nameRef = useRef(null);
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const [errorMessage, setErrorMessage] = useState("");
-  const navigate = useNavigate(); // Use navigation for redirection 
-  const dispatch = useDispatch()
+
+  const dispatch = useDispatch();
   const handleButtonClick = () => {
     const name = nameRef?.current?.value;
     const email = emailRef?.current?.value;
     const password = passwordRef?.current?.value;
     const message = checkValidData(name, email, password);
     setErrorMessage(message || "");
-    if(message)return;
-    if(!isSignInForm){
-//  sign up logic
-createUserWithEmailAndPassword(auth, email, password)
-.then((userCredential) => {
-  const user = userCredential.user;
-  updateProfile(user, {
-    displayName: name, photoURL: "https://example.com/jane-q-user/profile.jpg"
-  }).then(() => {
-     const { uid, email, displayName, photoURL } = auth.currentUser;
-            dispatch(
-              addUsers({ uid: uid, email: email, displayName: displayName, photoURL:photoURL })
-            );
-           
-    navigate("/browse");
-  }).catch((error) => {
-    setErrorMessage(error.message)
-  });
- 
-  console.log(user)
-})
-.catch((error) => {
-  const errorCode = error.code;
-  const errorMessage = error.message;
-  setErrorMessage(errorCode+""+errorMessage)
-});
-    }else{
-// sign in logic
-signInWithEmailAndPassword(auth, email, password)
-.then((userCredential) => { 
-  const user = userCredential.user;
-  navigate("/browse");
-  console.log(user)
-  console.log("user successfully registered")
-})
-.catch((error) => {
-  const errorCode = error.code;
-  const errorMessage = error.message;
-  setErrorMessage(errorCode+""+errorMessage);
-});
+    if (message) return;
+    if (!isSignInForm) {
+      //  sign up logic
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          updateProfile(user, {
+            displayName: name,
+            photoURL: USER_AVTAR,
+          })
+            .then(() => {
+              const { uid, email, displayName, photoURL } = auth.currentUser;
+              dispatch(
+                addUsers({
+                  uid: uid,
+                  email: email,
+                  displayName: displayName,
+                  photoURL: photoURL,
+                })
+              );
+            })
+            .catch((error) => {
+              setErrorMessage(error.message);
+            });
+
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorCode + "" + errorMessage);
+        });
+    } else {
+      // sign in logic
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+         
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorCode + "" + errorMessage);
+        });
     }
   };
 
@@ -115,7 +122,9 @@ signInWithEmailAndPassword(auth, email, password)
             autoComplete="current-password"
           />
 
-          {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
+          {errorMessage && (
+            <p className="text-red-500 text-sm">{errorMessage}</p>
+          )}
 
           <button
             onClick={handleButtonClick}
@@ -125,7 +134,9 @@ signInWithEmailAndPassword(auth, email, password)
           </button>
 
           <p onClick={toggleSignUpForm} className="text-white cursor-pointer">
-            {isSignInForm ? "New to Netflix? Sign Up Now" : "Already registered? Sign In Now"}
+            {isSignInForm
+              ? "New to Netflix? Sign Up Now"
+              : "Already registered? Sign In Now"}
           </p>
         </form>
       </div>
