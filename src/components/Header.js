@@ -1,11 +1,14 @@
 import React, { useState, useRef, useEffect } from "react";
-import { NETFLIX_LOGO,USER_AVTAR } from "../utils/constant";
+import { NETFLIX_LOGO, SUPPORT_LANGUAGE, USER_AVTAR } from "../utils/constant";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../utils/firebase";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addUsers, removeUser } from "../store/userSlice";
-
+import { toggleGptSearch } from "../store/gptSlice";
+import { FaGlobe } from "react-icons/fa";
+import { channgeLanguage } from "../store/langConfigSlice";
+import lang from "../utils/languageConstant";
 const Header = () => {
   const [showProfile, setShowProfile] = useState(false);
   const dropdownRef = useRef(null);
@@ -13,8 +16,9 @@ const Header = () => {
   const user = auth.currentUser;
   const dispatch = useDispatch();
 
+  const showGptSearch = useSelector((store) => store.gpt.showGptSearch);
   useEffect(() => {
-   const unSubscribe = onAuthStateChanged(auth, (user) => {
+    const unSubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         const { uid, email, displayName, photoURL } = user;
         dispatch(
@@ -32,7 +36,7 @@ const Header = () => {
       }
     });
     // unsuscribe when component is unmoute
-    return ()=>unSubscribe();
+    return () => unSubscribe();
   }, []);
 
   const handleProfileDropDown = () => {
@@ -55,6 +59,12 @@ const Header = () => {
       .catch((error) => {});
   };
 
+  const hancleGptSearchClick = () => {
+    dispatch(toggleGptSearch());
+  };
+  const handleLangChange = (e) => {
+    dispatch(channgeLanguage(e.target.value));
+  };
   return (
     <div className="absolute top-0 left-0 w-full px-12 py-4 bg-gradient-to-b from-black to-transparent z-20 flex justify-between">
       {/* Netflix Logo */}
@@ -65,6 +75,29 @@ const Header = () => {
       {/* User Profile Section */}
       {user && (
         <div className="flex items-center space-x-4">
+          {showGptSearch && (
+            <div className="relative">
+              <FaGlobe className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white" />
+              <select
+                className="appearance-none bg-black text-white px-10 py-2 rounded border border-gray-600 focus:outline-none"
+                onChange={handleLangChange}
+              >
+                {SUPPORT_LANGUAGE.map((lang) => (
+                  <option key={lang.identifire} value={lang.identifire}>
+                    {lang.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          <button
+            type="button"
+            class="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+            onClick={hancleGptSearchClick}
+          >
+           {showGptSearch ? "Home Page":"Gpt Search"}
+          </button>
           <h1 className="text-white font-semibold">
             {user?.displayName ?? "User"}
           </h1>
@@ -94,20 +127,6 @@ const Header = () => {
                 aria-orientation="vertical"
                 aria-labelledby="user-menu-button"
               >
-                <a
-                  href="#"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  role="menuitem"
-                >
-                  Your Profile
-                </a>
-                <a
-                  href="#"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  role="menuitem"
-                >
-                  Settings
-                </a>
                 <button
                   onClick={handleSignOut}
                   className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
