@@ -3,7 +3,7 @@ import { Info, Play } from "lucide-react"; // Using Lucide icons
 
 const VideoTitle = ({ Movietitle, MovieOverview }) => {
   return (
-    <div className="absolute w-full aspect-video   px-24 pt-[20%] md:px-20 bg-gradient-to-r from-black/80 via-black/40 to-transparent">
+    <div className="absolute w-full aspect-video   px-20 pt-[15%] md:px-20 bg-gradient-to-r from-black/80 via-black/40 to-transparent">
       {/* Movie Title */}
       <h1 className="text-white text-4xl md:text-6xl font-bold max-w-2xl">
         {Movietitle}

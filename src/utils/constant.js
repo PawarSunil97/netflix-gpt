@@ -12,3 +12,11 @@ export const API_OPTION = {
     Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzMDcyOTdkZDI2ZWI3MGFmYzQxZWUxMTg2MmZiOWJlMCIsIm5iZiI6MTY5ODgyMDEyNS4wNTc5OTk4LCJzdWIiOiI2NTQxZjAxZDAyOGYxNDAwYWQ2MzFhMzUiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.Di-dUawK74_SI94qftD7AmfQgl_Ru-59qhQH0yopihg'
   }
 };
+
+export const IMG_CDN_URL="https://image.tmdb.org/t/p/w500";
+
+export const GET_POPULAR_MOVIE_API="https://api.themoviedb.org/3/movie/popular?page=1";
+
+export const GET_UPCOMMING_MOVIE="https://api.themoviedb.org/3/movie/upcoming?page=1";
+
+export const GET_TOP_RATED_MOVIE="https://api.themoviedb.org/3/movie/top_rated?page=1"
