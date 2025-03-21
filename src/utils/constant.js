@@ -12,8 +12,7 @@ export const API_OPTION = {
   method: "GET",
   headers: {
     accept: "application/json",
-    Authorization:
-      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzMDcyOTdkZDI2ZWI3MGFmYzQxZWUxMTg2MmZiOWJlMCIsIm5iZiI6MTY5ODgyMDEyNS4wNTc5OTk4LCJzdWIiOiI2NTQxZjAxZDAyOGYxNDAwYWQ2MzFhMzUiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.Di-dUawK74_SI94qftD7AmfQgl_Ru-59qhQH0yopihg",
+    Authorization: "Bearer" + process.env.REACT_APP_TMDB_KEY,
   },
 };
 
@@ -28,5 +27,9 @@ export const GET_UPCOMMING_MOVIE =
 export const GET_TOP_RATED_MOVIE =
   "https://api.themoviedb.org/3/movie/top_rated?page=1";
 
+export const SUPPORT_LANGUAGE = [
+  { identifire: "en", name: "English" },
+  { identifire: "hindi", name: "Hindi" },
+];
 
-export const SUPPORT_LANGUAGE=[{identifire:"en",name:"English"},{identifire:"hindi",name:"Hindi"}]
+export const OPEN_AI_KEY = process.env.REACT_APP_OPEN_AI_KEY;
