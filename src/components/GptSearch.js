@@ -14,8 +14,8 @@ const GptSearch = () => {
         />
       </div>
       
-        <GptSearchBar />
-        <GptSearchSuggesion />
+        <GptSearchBar /> 
+         <GptSearchSuggesion /> 
       
     </div>
   );
