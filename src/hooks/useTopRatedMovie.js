@@ -9,7 +9,6 @@ const useTopRatedMovie = () => {
   const getTopRatedMovie = async () => {
     const data = await fetch(GET_TOP_RATED_MOVIE, API_OPTION);
     const json = await data.json();
-    console.log("popular", json);
     dispatch(addTopRatedgMovie(json.results));
   };
 

@@ -19,7 +19,7 @@ const GptSearchBar = () => {
     return json.results; 
   };
   const handleGptSearchClick = async () => {
-    try {
+   
       const queryResult =
         "Act as a movie recommendation system and suggest some movies for the query " +
         searchText.current.value +
@@ -36,14 +36,9 @@ const GptSearchBar = () => {
         const movieNames = completion.choices[0].message.content.split(",");
         const promisesArray = movieNames.map((movie) => searchMovieTMDB(movie));
         const TMDBResults = await Promise.all(promisesArray);
-        console.log("Fetched Movie Data:", TMDBResults);
         dispatch(addGptMovieResult({movieName:movieNames,moviesResults:TMDBResults}))
-      } else {
-        console.log("Movie not found");
-      }
-    } catch (error) {
-      console.error("Error fetching OpenAI completion:", error);
-    }
+      } 
+    
   };
 
   return (

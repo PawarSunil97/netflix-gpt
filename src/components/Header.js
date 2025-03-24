@@ -65,16 +65,17 @@ const Header = () => {
   const handleLangChange = (e) => {
     dispatch(channgeLanguage(e.target.value));
   };
+ 
   return (
-    <div className="absolute top-0 left-0 w-full px-12 py-4 bg-gradient-to-b from-black to-transparent z-20 flex justify-between">
+    <div className="absolute top-0 left-0 w-full px-4 sm:px-8 py-4 flex flex-col sm:flex-row items-center justify-between bg-gradient-to-b from-black to-transparent z-20">
       {/* Netflix Logo */}
-      <div>
-        <img src={NETFLIX_LOGO} className="w-44 h-auto" alt="Netflix Logo" />
+      <div className="mb-4 sm:mb-0">
+        <img src={NETFLIX_LOGO} className="w-32 sm:w-44 h-auto" alt="Netflix Logo" />
       </div>
 
       {/* User Profile Section */}
       {user && (
-        <div className="flex items-center space-x-4">
+        <div className="flex flex-wrap items-center gap-3 sm:gap-5">
           {showGptSearch && (
             <div className="relative">
               <FaGlobe className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white" />
@@ -91,17 +92,21 @@ const Header = () => {
             </div>
           )}
 
+          {/* GPT Search Button */}
           <button
             type="button"
-            className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+            className="text-white bg-gradient-to-r from-red-500 to-red-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5"
             onClick={hancleGptSearchClick}
           >
-           {showGptSearch ? "Home Page":"Gpt Search"}
+            {showGptSearch ? "Home Page" : "GPT Search"}
           </button>
-          <h1 className="text-white font-semibold">
+
+          {/* User Name */}
+          <h1 className="text-white font-semibold hidden sm:block">
             {user?.displayName ?? "User"}
           </h1>
 
+          {/* Profile Avatar */}
           <div className="relative" ref={dropdownRef}>
             <button
               onClick={handleProfileDropDown}
@@ -112,17 +117,13 @@ const Header = () => {
               aria-haspopup="true"
             >
               <span className="sr-only">Open user menu</span>
-              <img
-                className="w-12 h-12 rounded-full"
-                src={USER_AVTAR}
-                alt="User Avatar"
-              />
+              <img className="w-10 h-10 sm:w-12 sm:h-12 rounded-full" src={USER_AVTAR} alt="User Avatar" />
             </button>
 
             {/* Dropdown Menu */}
             {showProfile && (
               <div
-                className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-none"
+                className="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-none"
                 role="menu"
                 aria-orientation="vertical"
                 aria-labelledby="user-menu-button"

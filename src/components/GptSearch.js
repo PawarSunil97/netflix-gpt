@@ -13,9 +13,11 @@ const GptSearch = () => {
           className="w-full h-full object-cover"
         />
       </div>
-      
+      <div>
+
         <GptSearchBar /> 
          <GptSearchSuggesion /> 
+      </div>
       
     </div>
   );

@@ -10,7 +10,7 @@ const VideoTitle = ({ Movietitle, MovieOverview }) => {
       </h1>
       
       {/* Movie Overview */}
-      <p className="text-white mt-4 max-w-md text-lg md:text-xl">
+      <p className="text-white mt-4 max-w-md text-lg md:text-xl hidden md:inline-block">
         {MovieOverview}
       </p>
 
